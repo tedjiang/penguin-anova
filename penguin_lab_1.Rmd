@@ -1,0 +1,37 @@
+---
+title: "Penguins ANOVA"
+author: "Yingfei Jiang"
+date: "11/6/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Load packages and read-in penguins.csv data
+
+```{r}
+
+library(tidyverse)
+library(car)
+library(onewaytests)
+
+penguins <- read_csv("penguins.csv")
+
+```
+
+Is there a significant difference in mean flipper length for female penguins by species (Chinstrap, Gentoo, and Adelie)?
+
+2. Do some exploring
+
+New functions: with + table for easy counting over multiple factors
+
+Update species name using case_when
+
+```{r}
+
+counts <- with(penguins, table(species, sex))
+
+```
+
