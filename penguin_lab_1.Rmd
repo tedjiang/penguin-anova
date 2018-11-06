@@ -33,5 +33,54 @@ Update species name using case_when
 
 counts <- with(penguins, table(species, sex))
 
+penguins2 <- penguins %>%
+  mutate(common_name =
+           case_when(
+             species == "Chinstrap penguin (Pygoscelis antarctica)" ~ "Chinstrap",
+             species == "Gentoo penguin (Pygoscelis papua)" ~ "Gentoo",
+             species == "Adelie Penguin (Pygoscelis adeliae)" ~ "Adelie"
+             )
+         ) %>% 
+  select(-species) %>% 
+  filter(sex == "FEMALE")
+
+```
+
+```{r}
+
+hists <- ggplot(penguins2, aes(x = flipper_length))+
+  geom_histogram(aes(fill = common_name)) +
+  facet_wrap(~common_name)
+
+hists
+
+qq <- ggplot(penguins2, aes(sample = flipper_length)) +
+  geom_qq()+
+  facet_wrap(~common_name)
+
+qq
+
+
+
+# Levene's test for equal variances (> 2 groups ... if you have two groups, use the F-test for equal variance)
+
+# We'll use the fuction leveneTest from the 'car' package
+
+penguin_levene <- leveneTest(flipper_length ~ common_name, data = penguins2)
+
+penguin_levene
+
+# We retain the null hypothesis of equal variance (p = 0.06)
+
+variances <- penguins2 %>% 
+  group_by(common_name) %>% 
+  summarize(
+    variance = var(flipper_length)
+  )
+
+variances
+
+
+
 ```
 
