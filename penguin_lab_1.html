@@ -225,6 +225,36 @@ variances</code></pre>
 ## 1 Adelie          31.3
 ## 2 Chinstrap       33.1
 ## 3 Gentoo          15.2</code></pre>
+<div id="one-way-anova" class="section level1">
+<h1>3. One-way ANOVA</h1>
+<p>Single factor: common_name (species) Number of levels in the factor: 3 (Chinstrap, Gentoo, Adelie) Random variable: flipper_length (mm)</p>
+<p>Is there a significant difference in mean flipper length (mm) for female Chinstrap, Gentoo and Adelie penguins</p>
+<pre class="r"><code>#H0: mean flipper lengths across all species are equal
+#HA: At LEAST two means differ significantly
+
+penguin_aov &lt;- aov(flipper_length ~ common_name, data = penguins2)
+summary(penguin_aov)</code></pre>
+<pre><code>##              Df Sum Sq Mean Sq F value Pr(&gt;F)    
+## common_name   2  21416   10708   411.8 &lt;2e-16 ***
+## Residuals   162   4213      26                   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+<pre class="r"><code># At least two samples were taken from populations with different means.
+# There is a significant difference in flipper length based on species
+
+penguin_ph &lt;- TukeyHSD(penguin_aov)
+penguin_ph</code></pre>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = flipper_length ~ common_name, data = penguins2)
+## 
+## $common_name
+##                       diff       lwr       upr     p adj
+## Chinstrap-Adelie  3.940774  1.436275  6.445272 0.0007922
+## Gentoo-Adelie    24.912376 22.790647 27.034105 0.0000000
+## Gentoo-Chinstrap 20.971602 18.366227 23.576977 0.0000000</code></pre>
+</div>
 
 
 
